@@ -1,6 +1,6 @@
 # Dreame Vacuum Clean — Edistymisen seuranta (PROGRESS.md)
 
-## Tila: Aloitettu
+## Tila: Valmis
 
 ### Valmistuneet vaiheet
 - [x] Repositorio `Tasshack/dreame-vacuum` kloonattu paikallisesti tarkasteltavaksi.
@@ -11,10 +11,17 @@
   - `dreame/protocol.py`: Varmistettu, että IoT-yhteydet ovat vain suoria valmistajan yhteyksiä (Dreame/Xiaomi Cloud), eikä ylimääräisiä kolmannen osapuolen kutsuja ole.
 - [x] Eristetty virtuaaliympäristö `.venv` luotu `uv`:lla.
 - [x] `PLAN.md` luotu.
-
-### Seuraavat askeleet
-- [ ] Git-haarojen alustus (`upstream-tracking` ja `clean-master`).
-- [ ] Tiedostojen puhdistus ja modulaarinen korjaus (`frontend.py`, `const.py`, `coordinator.py`, `config_flow.py`).
-- [ ] Syntaksitarkistus ja haun varmistus.
-- [ ] Synkronointityökalun `scripts/sync_upstream.sh` luominen.
-- [ ] Dokumentaation ja git-ohjeiden laadinta.
+- [x] Git-haarojen alustus:
+  - `upstream-tracking` seuraa Tasshackin virallista repoa (`upstream/master`).
+  - `main` sisältää puhdistetun koodin.
+- [x] Puhdistustyö:
+  - Poistettu `frontend.py` kokonaan (DRM, tiedostojen hashaustarkistukset, laitetietojen lähetys).
+  - Siivottu `const.py`: poistettu 272 kt hämärretty `FRONTEND`-blobi ja `DVC`-kuvake.
+  - Siivottu `coordinator.py`: poistettu DVC-ilmoitukset ja mainoslinkit.
+  - Siivottu `config_flow.py`: poistettu DVC-lisenssiavaimen kysely ja pakotus.
+  - Siivottu `__init__.py`: asetettu `frontend = None`.
+- [x] Laadunvarmistus:
+  - Kaikki `.py`-tiedostot validoitu (`python3 -m py_compile`).
+  - Varmistettu 0 telemetriakutsua tai DRM-tarkistusta.
+- [x] Upstream-synkronointityökalu luotu (`scripts/sync_upstream.sh`).
+- [x] Atominen git-commit suoritettu `main`-haaraan.
