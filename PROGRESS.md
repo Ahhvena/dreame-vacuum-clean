@@ -25,3 +25,12 @@
   - Varmistettu 0 telemetriakutsua tai DRM-tarkistusta.
 - [x] Upstream-synkronointityökalu luotu (`scripts/sync_upstream.sh`).
 - [x] Atominen git-commit suoritettu `main`-haaraan.
+
+### Vaihe 2: JS-karttaoptimoijan korvaaminen ja mini-racer-riippuvuuden poisto (Haara: feature/map-optimizer-python)
+- [x] Eristetty oma kehityshaara `feature/map-optimizer-python`.
+- [x] Purettu `custom_components/dreame_vacuum/dreame/resources.py` -tiedoston `MAP_OPTIMIZER_JS` tiedostoon `analysis/map_optimizer_raw.js`.
+- [x] Suoritettu staattinen AST/sovellusgraafianalyysi REA-työkalulla (`rea analyze-javascript-application`). Todettu: 0 verkko- tai järjestelmäkutsua, puhtaasti pikseli- ja matriisioperaatioita.
+- [x] Dokumentoitu algoritmin rakenne ja tavoite tiedostoon `analysis/findings_map_optimizer.md`.
+- [ ] Luodaan testidata ja verifiointiputki (JS vs. Python -vertailu).
+- [ ] Toteutetaan vastaava puhdas Python/NumPy-optimointialgoritmi.
+- [ ] Poistetaan `mini-racer`-riippuvuus ja päivitetään `map.py`.
