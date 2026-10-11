@@ -42,4 +42,5 @@
 - [x] Suoritettu syntaksitarkistus `python3 -m compileall` (0 virhettä).
 - [x] Päivitetty versio `v2.0.2-clean.2` tiedostoon `manifest.json`.
 - [x] Päivitetty `README.md` uudella huonepainikeominaisuudella.
-- [ ] Yhdistetään `main`-haaraan, julkaistaan GitHubiin ja verifioidaan Home Assistantissa.
+- [x] Yhdistetty `main`-haaraan, julkaistu GitHub Release `v2.0.2-clean.2`.
+- [x] Verifioitu live Home Assistantissa: huonepainikkeet luotu onnistuneesti (`Fifi Siivoa Eteinen`, `Fifi Siivoa Makuuhuone`, `Fifi Siivoa Olohuone`).

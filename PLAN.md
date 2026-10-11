@@ -52,8 +52,8 @@ Luoda Home Assistantiin dynaamiset `button`-entiteetit jokaiselle imurin kartass
 - [x] 3. Suoritetaan laadunvarmistus ja syntaksitarkistus (`compileall`).
 - [x] 4. Testataan testiskriptillä ja mock-koordinaattorilla (`analysis/test_segment_buttons.py`).
 - [x] 5. Päivitetään `PROGRESS.md`, `README.md` ja nostetaan versio `v2.0.2-clean.2`.
-- [ ] 6. Yhdistetään `main`-haaraan, commitoidaan ja julkaistaan GitHubiin.
-- [ ] 7. Verifioidaan Home Assistantissa live-laiteella ("Fifi").
+- [x] 6. Yhdistetään `main`-haaraan, commitoidaan ja julkaistaan GitHubiin.
+- [x] 7. Verifioidaan Home Assistantissa live-laiteella ("Fifi").
 
 ---
 
