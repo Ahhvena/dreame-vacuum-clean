@@ -1971,6 +1971,9 @@
       "base_station_self_repair": {
         "name": "Base Station Self Repair"
       },
+      "clean_segment": {
+        "name": "Clean {name}"
+      },
       "clear_warning": {
         "name": "Clear Warning"
       },

@@ -32,3 +32,12 @@
 - [x] Upstream-synkronointityökalu luotu (`scripts/sync_upstream.sh`).
 - [x] Automaattinen GitHub Actions -julkaisutyönkulku luotu (`.github/workflows/release.yaml`).
 - [x] Atomiset git-commitit suoritettu `main`-haaraan.
+
+### Meneillään oleva vaihe: Vaihe 3 — Huonekohtaiset siivouspainikkeet (Haara: feature/room-cleaning-buttons)
+- [x] Eristetty oma kehityshaara `feature/room-cleaning-buttons`.
+- [x] Arkkitehtuuri ja suunnitelma dokumentoitu `PLAN.md`:hen.
+- [x] Toteutettu `DreameVacuumSegmentButtonEntity` ja dynaaminen rekisteröinti tiedostoon `button.py`.
+- [x] Lisätty lokalisoinnit (`clean_segment`) tiedostoihin `strings.json`, `translations/en.json` ja `translations/fi.json`.
+- [x] Luotu ja suoritettu kattava testisarja `analysis/test_segment_buttons.py` (5 testiä, kaikki hyväksytty).
+- [x] Suoritettu syntaksitarkistus `python3 -m compileall` (0 virhettä).
+- [ ] Versiopäivitys, dokumentaatio ja yhdistäminen `main`-haaraan.

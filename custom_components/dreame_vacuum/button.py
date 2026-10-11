@@ -322,6 +322,11 @@ async def async_setup_entry(
         coordinator.async_add_listener(update_buttons)
         update_buttons()
 
+    if coordinator.device.capability.map:
+        update_segment_buttons = partial(async_update_segment_buttons, coordinator, {}, async_add_entities)
+        coordinator.async_add_listener(update_segment_buttons)
+        update_segment_buttons()
+
 
 @callback
 def async_update_buttons(
@@ -401,6 +406,66 @@ def async_remove_buttons(
             except ValueError:
                 pass
                 
+    current["init"] = []
+
+
+@callback
+def async_update_segment_buttons(
+    coordinator: DreameVacuumDataUpdateCoordinator,
+    current_segments: dict[int, DreameVacuumSegmentButtonEntity],
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    new_entities = []
+    if coordinator.device and coordinator.device.capability.map:
+        segments = coordinator.device.status.segments
+        if not isinstance(segments, dict):
+            return
+
+        new_ids = set(segments.keys()) if segments else set()
+        current_ids = set(k for k in current_segments if k != "init")
+
+        async_remove_segment_buttons(coordinator, current_segments, new_ids)
+
+        for segment_id in new_ids - current_ids:
+            entity = DreameVacuumSegmentButtonEntity(coordinator, segment_id)
+            current_segments[segment_id] = entity
+            new_entities.append(entity)
+
+    if new_entities:
+        async_add_entities(new_entities)
+
+
+def async_remove_segment_buttons(
+    coordinator: DreameVacuumDataUpdateCoordinator,
+    current: dict[int, DreameVacuumSegmentButtonEntity],
+    new_ids: set,
+) -> None:
+    try:
+        registry = entity_registry.async_get(coordinator.hass)
+    except Exception:
+        registry = None
+
+    current_ids = set(k for k in current if k != "init")
+    for segment_id in current_ids - new_ids:
+        entity = current[segment_id]
+        if registry and hasattr(registry, "entities") and hasattr(entity, "entity_id") and entity.entity_id in registry.entities:
+            registry.async_remove(entity.entity_id)
+        del current[segment_id]
+
+    if "init" in current:
+        return
+
+    if registry:
+        entry_id = coordinator._entry.entry_id if hasattr(coordinator, "_entry") else coordinator.config_entry.entry_id
+        for entry in entity_registry.async_entries_for_config_entry(registry, entry_id):
+            if entry.domain == "button" and f"{coordinator.device.mac}_segment_" in entry.unique_id and entry.unique_id.endswith("_clean"):
+                try:
+                    sid = int(entry.unique_id.split("_segment_")[-1].split("_clean")[0])
+                    if sid not in new_ids:
+                        registry.async_remove(entry.entity_id)
+                except (ValueError, IndexError):
+                    pass
+
     current["init"] = []
 
 
@@ -512,4 +577,96 @@ class DreameVacuumShortcutButtonEntity(DreameVacuumEntity, ButtonEntity):
             "Unable to call %s",
             self.device.start_shortcut,
             self.shortcut_id,
+        )
+
+
+class DreameVacuumSegmentButtonEntity(DreameVacuumEntity, ButtonEntity):
+    """Defines a Dreame Vacuum Segment (Room) Button entity."""
+
+    def __init__(
+        self,
+        coordinator: DreameVacuumDataUpdateCoordinator,
+        segment_id: int,
+        description: DreameVacuumButtonEntityDescription | None = None,
+    ) -> None:
+        """Initialize a Dreame Vacuum Segment Button entity."""
+        if isinstance(segment_id, DreameVacuumButtonEntityDescription) and isinstance(description, int):
+            segment_id, description = description, segment_id
+
+        self.segment_id = segment_id
+        self.segment = None
+        if coordinator.device and coordinator.device.status and coordinator.device.status.segments:
+            self.segment = coordinator.device.status.segments.get(segment_id)
+
+        if description is None:
+            description = DreameVacuumButtonEntityDescription(
+                key="clean_segment",
+                icon="mdi:broom",
+            )
+
+        super().__init__(coordinator, description)
+        self._attr_unique_id = f"{self.device.mac}_segment_{self.segment_id}_clean"
+        self.entity_id = async_generate_entity_id(
+            ENTITY_ID_FORMAT,
+            f"{self.device.name}_segment_{self.segment_id}_clean",
+            hass=self.coordinator.hass,
+        )
+        self._set_id()
+
+    def _set_id(self) -> None:
+        """Set name and icon of the entity."""
+        segment_name = None
+        if self.segment:
+            segment_name = self.segment.custom_name or self.segment.name
+        if not segment_name:
+            segment_name = self._localize_segment_name(self.segment, self.segment_id)
+
+        key = "clean_segment"
+        self._attr_name = self._localized_name(
+            "button", key, f"Clean {segment_name}", name=segment_name
+        )
+        if self._name_placeholder:
+            self._attr_translation_placeholders = {"name": segment_name}
+
+        if self.segment and self.segment.icon:
+            self._attr_icon = self.segment.icon
+        else:
+            self._attr_icon = "mdi:broom"
+
+    @property
+    def available(self) -> bool:
+        """Return True if entity is available."""
+        if not self.device or not self.device.device_connected:
+            return False
+        if bool(self.device.status.draining) or bool(self.device.status.self_repairing):
+            return False
+        if not self.device.status.segments or self.segment_id not in self.device.status.segments:
+            return False
+        return True
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        if self.device and self.device.status and self.device.status.segments:
+            self.segment = self.device.status.segments.get(self.segment_id)
+        else:
+            self.segment = None
+        self._set_id()
+        self.async_write_ha_state()
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        """Return the extra state attributes of the entity."""
+        if self.segment and hasattr(self.segment, "as_dict"):
+            return self.segment.as_dict()
+        return {"segment_id": self.segment_id}
+
+    async def async_press(self, **kwargs: Any) -> None:
+        """Press the button."""
+        if not self.available:
+            self._raise_error(EntityUnavailableException())
+
+        await self._try_command(
+            "Unable to call %s",
+            self.device.clean_segment,
+            self.segment_id,
         )

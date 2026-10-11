@@ -1971,6 +1971,9 @@
       "base_station_self_repair": {
         "name": "Tukiaseman itsekirjaus"
       },
+      "clean_segment": {
+        "name": "Siivoa {name}"
+      },
       "clear_warning": {
         "name": "Tyhjennä varoitus"
       },

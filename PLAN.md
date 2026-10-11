@@ -27,6 +27,36 @@ Lisäksi luodaan selkeä haararakenne ja synkronointityökalu, jolla tulevat ups
 - `uv` virtuaaliympäristölle ja testaukselle
 - Git versionhallintaan ja haarojen yhdistämiseen
 
+## Suunnitelma: Huonekohtaiset siivouspainikkeet (Vaihe 3)
+
+### Tavoite
+Luoda Home Assistantiin dynaamiset `button`-entiteetit jokaiselle imurin kartassa olevalle huoneelle (`Segment`), jotta käyttäjä voi yhdellä painalluksella (tai fyysisellä Zigbee-napilla/automaatiolla) käynnistää tietyn huoneen siivouksen ilman palvelukutsuja tai skriptejä.
+
+### Arkkitehtuuri
+1. **Pysyvä ankkurointi (`unique_id`):**
+   - Muoto: `{device_mac}_segment_{segment_id}_clean`.
+   - Varmistaa, että nimenmuutokset eivät riko Home Assistantin automaatioita.
+2. **Dynaaminen elinkaari (`async_update_segment_buttons`):**
+   - Rekisteröidään kuuntelija `coordinator.async_add_listener`.
+   - Kun kartasta löytyy uusia segmenttejä -> lisätään uudet painikkeet lennossa (`async_add_entities`).
+   - Jos segmentti poistuu kartasta -> merkitään painike `available = False`.
+3. **Nimien päivitys:**
+   - Painikkeen nimi ottaa huomioon `segment.custom_name` tai `segment.name`.
+   - Jos huone nimetään uudelleen sovelluksessa, painikkeen nimi päivittyy automaattisesti.
+4. **Toiminto (`async_press`):**
+   - Kutsuu `await self._try_command("Unable to call %s", self.device.clean_segment, self.segment_id)`.
+
+### Työvaiheet
+- [x] 1. Toteutetaan `DreameVacuumSegmentButtonEntity` ja dynaaminen rekisteröinti tiedostoon `custom_components/dreame_vacuum/button.py`.
+- [x] 2. Lisätään tarvittavat käännösavaimet ja kuvakkeet (`mdi:broom` tai huonekohtainen `segment.icon`).
+- [x] 3. Suoritetaan laadunvarmistus ja syntaksitarkistus (`compileall`).
+- [x] 4. Testataan testiskriptillä ja mock-koordinaattorilla (`analysis/test_segment_buttons.py`).
+- [ ] 5. Päivitetään `PROGRESS.md`, `README.md` ja nostetaan versio `v2.0.2-clean.2`.
+- [ ] 6. Yhdistetään `main`-haaraan, commitoidaan ja julkaistaan GitHubiin.
+- [ ] 7. Verifioidaan Home Assistantissa live-laiteella ("Fifi").
+
+---
+
 ## Työvaiheiden tarkistuslista (Checklist)
 - [x] 1. Projektin tilan alustus: luodaan `PLAN.md` ja `PROGRESS.md`.
 - [x] 2. Git-haarojen valmistelu: nimetään upstream-remote `upstream`iksi ja luodaan `main`-haara.
