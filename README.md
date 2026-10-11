@@ -1,8 +1,8 @@
 # Dreame Vacuum (Clean Edition) 🧹✨
 
-[![GitHub Release](https://img.shields.io/github/v/release/Ahhvena/dreame-vacuum-clean?style=for-the-badge&color=18bcf2)](https://github.com/Ahhvena/dreame-vacuum-clean/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/Valtteri-H/dreame-vacuum-clean?style=for-the-badge&color=18bcf2)](https://github.com/Valtteri-H/dreame-vacuum-clean/releases)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom%20Repo-orange.svg?logo=HomeAssistantCommunityStore&color=18bcf2&logoColor=white&style=for-the-badge)](https://hacs.xyz/)
-[![Validated](https://img.shields.io/badge/Hassfest-Passing-success?style=for-the-badge&logo=homeassistant&logoColor=white)](https://github.com/Ahhvena/dreame-vacuum-clean/actions)
+[![Validated](https://img.shields.io/badge/Hassfest-Passing-success?style=for-the-badge&logo=homeassistant&logoColor=white)](https://github.com/Valtteri-H/dreame-vacuum-clean/actions)
 
 Täysin avoin, telemetriaton, DRM-vapaa ja itsenäinen Home Assistant -integraatio **Dreame**, **MOVA**, **Mijia** ja **Trouver** -robotti-imureille.
 
@@ -41,7 +41,7 @@ Helpoin tapa asentaa integraatio (sekä omaan että perheenjäsenten Home Assist
 1. Avaa Home Assistant ja mene kohtaan **HACS** -> **Integrations**.
 2. Klikkaa oikean yläkulman valikkoa `⋮` ja valitse **Custom repositories** (Omat tietovarastot).
 3. Täytä tiedot:
-   - **Repository:** `https://github.com/Ahhvena/dreame-vacuum-clean`
+   - **Repository:** `https://github.com/Valtteri-H/dreame-vacuum-clean`
    - **Type / Tyyppi:** `Integration`
 4. Paina **Add** (Lisää).
 
