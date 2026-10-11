@@ -28,21 +28,30 @@ Lisäksi luodaan selkeä haararakenne ja synkronointityökalu, jolla tulevat ups
 - Git versionhallintaan ja haarojen yhdistämiseen
 
 ## Työvaiheiden tarkistuslista (Checklist)
-- [ ] 1. Projektin tilan alustus: luodaan `PLAN.md` ja `PROGRESS.md`.
-- [ ] 2. Git-haarojen valmistelu: nimetään upstream-remote `upstream`iksi ja luodaan `clean-master`-haara.
-- [ ] 3. Puhdistustyö:
-  - [ ] 3.1 Poistetaan `frontend.py` (DRM, SHA256-tiedostotarkistukset, `api.tasshack.com`-telemetria).
-  - [ ] 3.2 Siivotaan `const.py` (`FRONTEND`-jättiblobi, `CONF_DVC_KEY`, `DVC`).
-  - [ ] 3.3 Siivotaan `coordinator.py` (DVC-ilmoitukset).
-  - [ ] 3.4 Siivotaan `config_flow.py` (DVC-konfigurointivaiheet ja linkit).
-  - [ ] 3.5 Siivotaan `__init__.py` ja tarkistetaan integraation lataus ilman `frontend.py`tä.
-- [ ] 4. Synkronointityökalun luominen (`scripts/sync_upstream.sh`).
-- [ ] 5. Laadunvarmistus ja testaus:
-  - [ ] 5.1 Syntaksitarkistus (`py_compile`) kaikille muokatuille moduuleille.
-  - [ ] 5.2 Haku: varmistetaan, ettei koodissa ole enää yhtään viittausta `tasshack.com`-palvelimille tai DRM-hasheihin.
-  - [ ] 5.3 Simuloitu komponentin alustus/import-tarkistus.
-- [ ] 6. Dokumentaatio: luodaan `README.md`, jossa ohjeistetaan asennus Home Assistantiin ja synkronointi.
-- [ ] 7. Ohjeet käyttäjälle yksityisen GitHub-repon luomiseen ja koodin puskemiseen.
+- [x] 1. Projektin tilan alustus: luodaan `PLAN.md` ja `PROGRESS.md`.
+- [x] 2. Git-haarojen valmistelu: nimetään upstream-remote `upstream`iksi ja luodaan `main`-haara.
+- [x] 3. Puhdistustyö (Vaihe 1):
+  - [x] 3.1 Poistettu `frontend.py` (DRM, SHA256-tiedostotarkistukset, `api.tasshack.com`-telemetria).
+  - [x] 3.2 Siivottu `const.py` (`FRONTEND`-jättiblobi, `CONF_DVC_KEY`, `DVC`).
+  - [x] 3.3 Siivottu `coordinator.py` (DVC-ilmoitukset).
+  - [x] 3.4 Siivottu `config_flow.py` (DVC-konfigurointivaiheet ja linkit).
+  - [x] 3.5 Siivottu `__init__.py` ja tarkistettu integraation lataus ilman `frontend.py`tä.
+- [x] 4. JS-karttaoptimoijan korvaaminen ja riippuvuuksien poisto (Vaihe 2):
+  - [x] 4.1 Analysoitu `MAP_OPTIMIZER_JS` REA-työkaluilla (0 ulkoista kutsua).
+  - [x] 4.2 Tunnistettu ja otettu käyttöön integraation oma natiivi Python-algoritmi.
+  - [x] 4.3 Poistettu `mini-racer`-riippuvuus `manifest.json`:sta ja `map.py`:stä.
+  - [x] 4.4 Poistettu hämärretty `MAP_OPTIMIZER_JS` `resources.py`:stä.
+- [x] 5. Synkronointi- ja julkaisutyökalut:
+  - [x] 5.1 Luotu `scripts/sync_upstream.sh` tulevia päivityksiä varten.
+  - [x] 5.2 Luotu `.github/workflows/release.yaml` automaattiseen HACS-zip-paketointiin.
+- [x] 6. Laadunvarmistus ja testaus:
+  - [x] 6.1 Syntaksitarkistus (`compileall`) kaikille moduuleille (0 virhettä).
+  - [x] 6.2 Haku: varmistettu 0 osumaa `tasshack.com`, `dvc_key` tai `mini-racer`.
+  - [x] 6.3 Aliagenttien riippumaton turvallisuus- ja HA-auditointi (100 % puhdas).
+  - [x] 6.4 Testattu asennus ja toiminta live Home Assistantissa (`vacuum.fifi` -> `state: docked`).
+- [x] 7. Dokumentaatio ja julkaisu:
+  - [x] 7.1 Luotu moderni `README.md` (HACS-asennusohje, tekoälymaininta).
+  - [x] 7.2 Julkaistu GitHub Release `v2.0.2-clean.1` repositoriossa `Valtteri-H/dreame-vacuum-clean`.
 
 ## Testausstrategia
 - Staattinen analyysi ja syntaksitarkistus kaikille `.py`-tiedostoille (`python3 -m py_compile`).
