@@ -30,4 +30,5 @@
   - Kaikki `.py`-tiedostot validoitu (`compileall`).
   - Varmistettu 0 telemetriakutsua, 0 DRM-tarkistusta ja 0 `mini-racer`-kutsua.
 - [x] Upstream-synkronointityökalu luotu (`scripts/sync_upstream.sh`).
+- [x] Automaattinen GitHub Actions -julkaisutyönkulku luotu (`.github/workflows/release.yaml`).
 - [x] Atomiset git-commitit suoritettu `main`-haaraan.
