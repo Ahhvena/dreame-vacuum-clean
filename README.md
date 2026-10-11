@@ -36,6 +36,17 @@ Täysin vibekoodattu projekti
 
 ---
 
+## 📌 Versionumerointi
+
+Tämä projekti seuraa **upstream-peilaus- ja patch-versiointia**:
+`v<UPSTREAM_VERSIO>-clean.<PATCH>`
+
+* **Ensimmäinen osa (`v2.0.2`):** Vastaa suoraan alkuperäisen [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum) -integraation virallista julkaisuversiota ja sen laitetukea.
+* **Jälkimmäinen osa (`-clean.1`, `-clean.2` jne.):** Kertoo tämän puhdistetun ja itsenäisen version omat päivitykset ja parannukset.
+* Esimerkki: `v2.0.2-clean.2` = Tasshackin `v2.0.2`-versioon pohjautuva puhdistettu versio, jossa on lisäksi huonekohtaiset siivouspainikkeet.
+
+---
+
 ## 🚀 Asennus Home Assistantiin (HACS)
 
 ### 1. Lisää HACS:iin Custom Repositoryna
@@ -47,8 +58,8 @@ Täysin vibekoodattu projekti
 4. Paina **Add** (Lisää).
 
 ### 2. Lataa ja käynnistä uudelleen
-1. Etsi HACS:sta **Dreame Vacuum** (tai *Dreame Vacuum Clean*).
-2. Valitse **Download** (Lataa) ja hyväksy uusin versio (esim. `v2.0.2-clean.1`).
+1. Etsi HACS:sta **Dreame Vacuum (Clean)**.
+2. Valitse **Download** (Lataa) ja valitse uusin julkaisu (esim. `v2.0.2-clean.2`).
 3. Käynnistä Home Assistant uudelleen: **Asetukset** -> **Järjestelmä** -> **Käynnistä uudelleen**.
 
 ### 3. Ota imuri käyttöön
