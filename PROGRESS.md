@@ -40,4 +40,6 @@
 - [x] Lisätty lokalisoinnit (`clean_segment`) tiedostoihin `strings.json`, `translations/en.json` ja `translations/fi.json`.
 - [x] Luotu ja suoritettu kattava testisarja `analysis/test_segment_buttons.py` (5 testiä, kaikki hyväksytty).
 - [x] Suoritettu syntaksitarkistus `python3 -m compileall` (0 virhettä).
-- [ ] Versiopäivitys, dokumentaatio ja yhdistäminen `main`-haaraan.
+- [x] Päivitetty versio `v2.0.2-clean.2` tiedostoon `manifest.json`.
+- [x] Päivitetty `README.md` uudella huonepainikeominaisuudella.
+- [ ] Yhdistetään `main`-haaraan, julkaistaan GitHubiin ja verifioidaan Home Assistantissa.

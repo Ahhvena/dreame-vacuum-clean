@@ -24,6 +24,9 @@ Tämä versio perustuu [Tasshack/dreame-vacuum](https://github.com/Tasshack/drea
 5. **Natiivi Python-karttaoptimointi (Ei enää `mini-racer`-kaatumisia):**
    - Korvattu erillinen C++/V8 JavaScript -moottoririippuvuus (`mini-racer`, `MAP_OPTIMIZER_JS`) integraation omalla natiivilla Python/NumPy-optimointialgoritmilla.
    - Integraatio on nyt kevyt, itsenäinen ja toimii vakaasti kaikilla Home Assistant -alustoilla (ARM, Alpine/musl, Linux).
+6. **Automaattiset huonekohtaiset siivouspainikkeet (One-click Room Cleaning):**
+   - Luo automaattisesti jokaiselle kartan huoneelle oman dynaamisen `button`-entiteetin (esim. `button.fifi_clean_eteinen`).
+   - Pysyvä `unique_id` (segment_id) takaa, että huoneiden uudelleennimeäminen ei koskaan riko automaatioita tai dashboard-painikkeita.
 
 ---
 
