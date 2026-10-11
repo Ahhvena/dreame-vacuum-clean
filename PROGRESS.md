@@ -14,25 +14,20 @@
 - [x] Git-haarojen alustus:
   - `upstream-tracking` seuraa Tasshackin virallista repoa (`upstream/master`).
   - `main` sisältää puhdistetun koodin.
-- [x] Puhdistustyö:
+- [x] Puhdistustyö (Vaihe 1):
   - Poistettu `frontend.py` kokonaan (DRM, tiedostojen hashaustarkistukset, laitetietojen lähetys).
   - Siivottu `const.py`: poistettu 272 kt hämärretty `FRONTEND`-blobi ja `DVC`-kuvake.
   - Siivottu `coordinator.py`: poistettu DVC-ilmoitukset ja mainoslinkit.
   - Siivottu `config_flow.py`: poistettu DVC-lisenssiavaimen kysely ja pakotus.
   - Siivottu `__init__.py`: asetettu `frontend = None`.
+- [x] JS-karttaoptimoijan purku ja mini-racer-riippuvuuden poisto (Vaihe 2):
+  - Purettu ja analysoitu `MAP_OPTIMIZER_JS` REA-työkalulla.
+  - Tunnistettu ja verifioitu integraation oma natiivi Python-karttaoptimointialgoritmi.
+  - Poistettu `py_mini_racer`-riippuvuus `manifest.json`:sta.
+  - Poistettu `MAP_OPTIMIZER_JS`-blobi `resources.py`:stä ja V8-kutsut `map.py`:stä.
+  - Otettu käyttöön 100 % natiivi Python-optimointi.
 - [x] Laadunvarmistus:
-  - Kaikki `.py`-tiedostot validoitu (`python3 -m py_compile`).
-  - Varmistettu 0 telemetriakutsua tai DRM-tarkistusta.
+  - Kaikki `.py`-tiedostot validoitu (`compileall`).
+  - Varmistettu 0 telemetriakutsua, 0 DRM-tarkistusta ja 0 `mini-racer`-kutsua.
 - [x] Upstream-synkronointityökalu luotu (`scripts/sync_upstream.sh`).
-- [x] Atominen git-commit suoritettu `main`-haaraan.
-
-### Vaihe 2: JS-karttaoptimoijan korvaaminen ja mini-racer-riippuvuuden poisto (Haara: feature/map-optimizer-python)
-- [x] Eristetty oma kehityshaara `feature/map-optimizer-python`.
-- [x] Purettu `custom_components/dreame_vacuum/dreame/resources.py` -tiedoston `MAP_OPTIMIZER_JS` tiedostoon `analysis/map_optimizer_raw.js`.
-- [x] Suoritettu staattinen AST/sovellusgraafianalyysi REA-työkalulla (`rea analyze-javascript-application`). Todettu: 0 verkko- tai järjestelmäkutsua, puhtaasti pikseli- ja matriisioperaatioita.
-- [x] Dokumentoitu algoritmin rakenne ja tavoite tiedostoon `analysis/findings_map_optimizer.md`.
-- [x] Tunnistettu ja verifioitu `map.py`:ssä valmiina ollut natiivi Python-optimointitoteutus (`_clean_wall`, `_fill_map_data`, `_find_bounds`, `_find_outline` jne.).
-- [x] Luotu verifiointitesti `analysis/test_native_optimizer.py` ja varmistettu toiminta ilman JavaScriptiä.
-- [x] Poistettu `mini-racer`-riippuvuus `manifest.json`:sta.
-- [x] Poistettu `MAP_OPTIMIZER_JS`-blobi `resources.py`:stä ja `MiniRacer`-kutsut `map.py`:stä.
-- [x] Validoitu koko koodikanta (`compileall`). Todettu: 0 viittausta `mini-raceriin` tai hämärrettyyn JS-koodiin.
+- [x] Atomiset git-commitit suoritettu `main`-haaraan.
