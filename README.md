@@ -1,3 +1,21 @@
+# Dreame Vacuum (Clean Edition)
+
+> **Täysin avoin, telemetriaton ja DRM-vapaa versio `Tasshack/dreame-vacuum` -integraatiosta.**
+
+### Mitä on siivottu?
+1. **Ei telemetriaa tai laitetietojen keruuta:** Poistettu yhteydet ja datan lähetys ulkoisille palvelimille (`api.tasshack.com`).
+2. **Ei DRM- / lisenssilukituksia:** Poistettu suljettu `dvc_key`-lisenssiavainjärjestelmä ja mainokset.
+3. **Ei peukalointitarkistuksia:** Poistettu omien Python-tiedostojen SHA256-hash-tarkistukset (`gvh`/`gsh`).
+4. **Ei hämärrettyjä paketteja:** Poistettu 272 kt kokoinen hämärretty `FRONTEND`-blobi. Kaikki taustajärjestelmän toiminnot, kartat, kamerat, anturit, huoneohjaukset ja paikallis-/pilviohjaukset toimivat suoraan Home Assistantin standardeilla entiteeteillä.
+
+### Upstream-päivitykset
+Päivitykset Tasshackin virallisesta versiosta voidaan tuoda helposti ajamalla:
+```bash
+./scripts/sync_upstream.sh
+```
+
+---
+
 <center>
 <div align="center">
 

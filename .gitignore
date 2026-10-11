@@ -5,3 +5,6 @@
 /env
 *.zip
 .idea
+__pycache__/
+*.py[cod]
+.venv/
