@@ -35,8 +35,6 @@ Täysin vibekoodattu projekti
 
 ## 🚀 Asennus Home Assistantiin (HACS)
 
-Helpoin tapa asentaa integraatio (sekä omaan että perheenjäsenten Home Assistantiin):
-
 ### 1. Lisää HACS:iin Custom Repositoryna
 1. Avaa Home Assistant ja mene kohtaan **HACS** -> **Integrations**.
 2. Klikkaa oikean yläkulman valikkoa `⋮` ja valitse **Custom repositories** (Omat tietovarastot).
