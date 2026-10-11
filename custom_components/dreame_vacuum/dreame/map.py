@@ -13,7 +13,6 @@ import copy
 import numpy as np
 import hashlib
 import textwrap
-from py_mini_racer import MiniRacer
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import rsa, padding as asym_padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
@@ -12613,7 +12612,6 @@ class DreameVacuumMapRenderer:
 
 class DreameVacuumMapOptimizer:
     def __init__(self) -> None:
-        self._js_optimizer = None
         self._lock = threading.Lock()
 
     def _clean_wall(self, data, width, height):
@@ -13942,12 +13940,12 @@ class DreameVacuumMapOptimizer:
             map_data.optimized_pixel_type = pixel_type
             map_data.optimized_dimensions = MapImageDimensions(top, left, height, width, map_data.dimensions.grid_size)
 
-    def optimize(self, map_data, saved_map_data=None, js_optimizer=True):
-        # Called from the map manager and Home Assistant executor threads, the JS optimizer is not thread safe
+    def optimize(self, map_data, saved_map_data=None, js_optimizer=False):
+        # Native Python map optimizer
         with self._lock:
-            return self._optimize(map_data, saved_map_data, js_optimizer)
+            return self._optimize(map_data, saved_map_data)
 
-    def _optimize(self, map_data, saved_map_data=None, js_optimizer=True):
+    def _optimize(self, map_data, saved_map_data=None):
         if map_data.need_optimization:
             if map_data.saved_map:
                 map_data.need_optimization = False
@@ -13958,33 +13956,34 @@ class DreameVacuumMapOptimizer:
 
             try:
                 now = time.time()
+                width = map_data.dimensions.width
+                height = map_data.dimensions.height
+                clean_data = np.zeros((width * height), np.uint8).tolist()
 
-                if js_optimizer:
-                    if self._js_optimizer == None:
-                        self._js_optimizer = MiniRacer()
-                        self._js_optimizer.eval(base64.b64decode(MAP_OPTIMIZER_JS).decode("utf-8"))
+                data_map = {255: 2, 253: 1, 250: 3}
+                pointNum = 0
+                for j in range(height):
+                    for i in range(width):
+                        index = j * width + i
+                        clean_data[index] = int(map_data.pixel_type[i, j])
+                        if clean_data[index]:
+                            pointNum = pointNum + 1
+                            clean_data[index] = data_map.get(clean_data[index], 0)
 
-                    data = map_data.pixel_type.tolist()
-                    data_size = [
-                        map_data.dimensions.left,
-                        map_data.dimensions.top,
-                        map_data.dimensions.width,
-                        map_data.dimensions.height,
-                        map_data.dimensions.grid_size,
-                    ]
-                    saved_data = saved_map_data.pixel_type.tolist() if saved_map_data else None
-                    saved_data_size = (
-                        [
-                            saved_map_data.dimensions.left,
-                            saved_map_data.dimensions.top,
-                            saved_map_data.dimensions.width,
-                            saved_map_data.dimensions.height,
-                            saved_map_data.dimensions.grid_size,
-                        ]
-                        if saved_map_data
-                        else None
-                    )
-                    charger_position = None
+                original_data = clean_data.copy()
+                pixel_type = np.zeros((width, height), np.uint8)
+
+                self._clean_wall(clean_data, width, height)
+                self._fill_map_data(clean_data, width, height, 3)
+                self._denoise(clean_data, width, height)
+                self._update_border_value(clean_data, width, height, 5)
+                self._fill_cross_line(clean_data, width, height, 5)
+                self._link_adjacent_areas(original_data, clean_data, width, height, 5)
+
+                result = self._find_outline(clean_data, width, height, 5, True)
+                if result:
+                    self._fill_map_data_2(clean_data, width, height)
+                    self._update_border_value(clean_data, width, height, 6)
                     if map_data.charger_position:
                         left = map_data.dimensions.left
                         top = map_data.dimensions.top
@@ -13996,124 +13995,55 @@ class DreameVacuumMapOptimizer:
                             if saved_map_data.dimensions.top < top:
                                 top = saved_map_data.dimensions.top
 
-                        charger_position = [
-                            (map_data.charger_position.x - left) / map_data.dimensions.grid_size,
-                            (map_data.charger_position.y - top) / map_data.dimensions.grid_size,
-                            map_data.charger_position.a,
-                        ]
-
-                    result = self._js_optimizer.call(
-                        "optimize",
-                        data,
-                        data_size,
-                        saved_data,
-                        saved_data_size,
-                        charger_position,
-                    )
-                    if result and result[0]:
-                        map_data.optimized_pixel_type = np.array(result[0], dtype=np.uint8)
-
-                        dimensions = result[1]
-                        map_data.optimized_dimensions = MapImageDimensions(
-                            dimensions[1],
-                            dimensions[0],
-                            dimensions[3],
-                            dimensions[2],
-                            map_data.dimensions.grid_size,
+                        new_charger_position = copy.deepcopy(map_data.charger_position)
+                        new_charger_position.x = int(
+                            (new_charger_position.x - left) / map_data.dimensions.grid_size
                         )
+                        new_charger_position.y = int(
+                            (new_charger_position.y - top) / map_data.dimensions.grid_size
+                        )
+                        if (
+                            new_charger_position.y >= 0
+                            and new_charger_position.x >= 0
+                            and new_charger_position.y < height
+                            and new_charger_position.x < width
+                            and clean_data[
+                                int(math.floor(new_charger_position.y)) * width
+                                + int(math.floor(new_charger_position.x))
+                            ]
+                        ):
+                            new_charger_position = self._calculate_charger_position(
+                                clean_data, width, height, 6, new_charger_position
+                            )
+                            map_data.optimized_charger_position = Point(
+                                int(new_charger_position.x * map_data.dimensions.grid_size) + left,
+                                int(new_charger_position.y * map_data.dimensions.grid_size) + top,
+                                new_charger_position.a,
+                            )
 
-                        if result[2] and map_data.charger_position:
-                            charger = result[2]
-                            # map_data.optimized_charger_position = Point(charger[0] * map_data.dimensions.grid_size + left, charger[1] * map_data.dimensions.grid_size + top, charger[2])
-                else:
-                    width = map_data.dimensions.width
-                    height = map_data.dimensions.height
-                    clean_data = np.zeros((width * height), np.uint8).tolist()
+                    self._find_outline(clean_data, width, height, 6, False)
+                    self._fill_map_data_2(clean_data, width, height)
+                    self._update_border_value(clean_data, width, height, 7)
 
-                    data_map = {255: 2, 253: 1, 250: 3}
-                    pointNum = 0
+                    if saved_map_data:
+                        self._find_obstacle_border(clean_data, width, height, 3)
+                        self._obstacle_data(original_data, width, height)
+                    else:
+                        self._clean_small_obstacle(clean_data, width, height, 3)
+
+                    currentPointNum = 0
+                    data_map = {7: 255, 2: 255, 3: (0 if saved_map_data else 250)}
                     for j in range(height):
                         for i in range(width):
-                            index = j * width + i
-                            clean_data[index] = int(map_data.pixel_type[i, j])
-                            if clean_data[index]:
-                                pointNum = pointNum + 1
-                                clean_data[index] = data_map.get(clean_data[index], 0)
+                            clean_value = clean_data[j * width + i]
+                            if clean_value != 0:
+                                currentPointNum = currentPointNum + 1
+                                pixel_type[i, j] = data_map.get(clean_value, 253)
 
-                    original_data = clean_data.copy()
-                    pixel_type = np.zeros((width, height), np.uint8)
+                    if not ((currentPointNum * 100) / pointNum) < 50 and pointNum > 2000:
+                        map_data.optimized_pixel_type = pixel_type
 
-                    self._clean_wall(clean_data, width, height)
-                    self._fill_map_data(clean_data, width, height, 3)
-                    self._denoise(clean_data, width, height)
-                    self._update_border_value(clean_data, width, height, 5)
-                    self._fill_cross_line(clean_data, width, height, 5)
-                    self._link_adjacent_areas(original_data, clean_data, width, height, 5)
-
-                    result = self._find_outline(clean_data, width, height, 5, True)
-                    if result:
-                        self._fill_map_data_2(clean_data, width, height)
-                        self._update_border_value(clean_data, width, height, 6)
-                        if map_data.charger_position:
-                            left = map_data.dimensions.left
-                            top = map_data.dimensions.top
-
-                            if saved_map_data:
-                                if saved_map_data.dimensions.left < left:
-                                    left = saved_map_data.dimensions.left
-
-                                if saved_map_data.dimensions.top < top:
-                                    top = saved_map_data.dimensions.top
-
-                            new_charger_position = copy.deepcopy(map_data.charger_position)
-                            new_charger_position.x = int(
-                                (new_charger_position.x - left) / map_data.dimensions.grid_size
-                            )
-                            new_charger_position.y = int(
-                                (new_charger_position.y - top) / map_data.dimensions.grid_size
-                            )
-                            if (
-                                new_charger_position.y >= 0
-                                and new_charger_position.x >= 0
-                                and new_charger_position.y < height
-                                and new_charger_position.x < width
-                                and clean_data[
-                                    int(math.floor(new_charger_position.y)) * width
-                                    + int(math.floor(new_charger_position.x))
-                                ]
-                            ):
-                                new_charger_position = self._calculate_charger_position(
-                                    clean_data, width, height, 6, new_charger_position
-                                )
-                                map_data.optimized_charger_position = Point(
-                                    int(new_charger_position.x * map_data.dimensions.grid_size) + left,
-                                    int(new_charger_position.y * map_data.dimensions.grid_size) + top,
-                                    new_charger_position.a,
-                                )
-
-                        self._find_outline(clean_data, width, height, 6, False)
-                        self._fill_map_data_2(clean_data, width, height)
-                        self._update_border_value(clean_data, width, height, 7)
-
-                        if saved_map_data:
-                            self._find_obstacle_border(clean_data, width, height, 3)
-                            self._obstacle_data(original_data, width, height)
-                        else:
-                            self._clean_small_obstacle(clean_data, width, height, 3)
-
-                        currentPointNum = 0
-                        data_map = {7: 255, 2: 255, 3: (0 if saved_map_data else 250)}
-                        for j in range(height):
-                            for i in range(width):
-                                clean_value = clean_data[j * width + i]
-                                if clean_value != 0:
-                                    currentPointNum = currentPointNum + 1
-                                    pixel_type[i, j] = data_map.get(clean_value, 253)
-
-                        if not ((currentPointNum * 100) / pointNum) < 50 and pointNum > 2000:
-                            map_data.optimized_pixel_type = pixel_type
-
-                    self._merge_saved_map_data(map_data, saved_map_data, original_data)
+                self._merge_saved_map_data(map_data, saved_map_data, original_data)
 
                 _LOGGER.info(
                     "Optimize Map Data: %s:%s took: %.2f",

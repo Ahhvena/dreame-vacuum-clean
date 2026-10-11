@@ -31,6 +31,8 @@
 - [x] Purettu `custom_components/dreame_vacuum/dreame/resources.py` -tiedoston `MAP_OPTIMIZER_JS` tiedostoon `analysis/map_optimizer_raw.js`.
 - [x] Suoritettu staattinen AST/sovellusgraafianalyysi REA-työkalulla (`rea analyze-javascript-application`). Todettu: 0 verkko- tai järjestelmäkutsua, puhtaasti pikseli- ja matriisioperaatioita.
 - [x] Dokumentoitu algoritmin rakenne ja tavoite tiedostoon `analysis/findings_map_optimizer.md`.
-- [ ] Luodaan testidata ja verifiointiputki (JS vs. Python -vertailu).
-- [ ] Toteutetaan vastaava puhdas Python/NumPy-optimointialgoritmi.
-- [ ] Poistetaan `mini-racer`-riippuvuus ja päivitetään `map.py`.
+- [x] Tunnistettu ja verifioitu `map.py`:ssä valmiina ollut natiivi Python-optimointitoteutus (`_clean_wall`, `_fill_map_data`, `_find_bounds`, `_find_outline` jne.).
+- [x] Luotu verifiointitesti `analysis/test_native_optimizer.py` ja varmistettu toiminta ilman JavaScriptiä.
+- [x] Poistettu `mini-racer`-riippuvuus `manifest.json`:sta.
+- [x] Poistettu `MAP_OPTIMIZER_JS`-blobi `resources.py`:stä ja `MiniRacer`-kutsut `map.py`:stä.
+- [x] Validoitu koko koodikanta (`compileall`). Todettu: 0 viittausta `mini-raceriin` tai hämärrettyyn JS-koodiin.
