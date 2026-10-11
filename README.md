@@ -29,10 +29,7 @@ Tämä versio perustuu [Tasshack/dreame-vacuum](https://github.com/Tasshack/drea
 
 ## 🤖 Tekoälyavusteinen kehitys ja auditointi
 
-Tämän puhdistetun version analyysi, koodin refaktorointi ja turvallisuusauditointi on toteutettu tekoälyagenttien avulla:
-- **Arkkitehtuuri & Orkestrointi:** [Hermes Agent](https://hermes-agent.nousresearch.com/) (Nous Research).
-- **Reverse Engineering & Staattinen analyysi:** [REA (Reverse Engineer Anything)](https://github.com/morluto/rea) -työkalut JavaScript-AST:n ja koodivirtojen kartoittamiseen.
-- **Riippumaton auditointi:** Suoritettu rinnakkaisilla aliagenteilla (0 ulkoista verkkokutsua, 0 DRM-tarkistusta, 100 % Python-syntaksi- ja HA-yhteensopivuus).
+Täysin vibekoodattu projekti
 
 ---
 
