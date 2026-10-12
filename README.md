@@ -30,10 +30,8 @@ Tämä versio perustuu [Tasshack/dreame-vacuum](https://github.com/Tasshack/drea
 7. **Roskakoritoiminto (Aja roskakorille / Go to Trash Bin):**
    - Painike `button.<imuri>_go_to_trash_bin`: Ajaa imurin suoraan roskakorin eteen odottamaan tyhjennystä. Toinen painallus palauttaa imurin takaisin telakkaan.
    - Painike `button.<imuri>_set_trash_bin_location` & palvelu `dreame_vacuum.set_trash_bin_location`: Tallentaa nykyisen sijainnin roskakoriksi yhdellä klikkauksella.
-8. **Integroitu Lovelace-karttakortti suomen kielellä & roskakorituella (All-in-One):**
-   - Sisältää valmiiksi integroidun avoimen lähdekoodin `dreame-vacuum-map-card` -käyttöliittymäkortin.
-   - Käännetty suoraan lähdekoodista: sisältää täyden **suomenkielisen lokalisoinnin** ja suoran **"Aja roskakorille" -painikkeen** kortin toimintorivillä!
-   - Rekisteröityy automaattisesti Home Assistantiin heti asennuksen jälkeen ilman erillistä HACS Lovelace -asennusta (`type: custom:dreame-vacuum-map-card`).
+8. **Täysi yhteensopivuus erillisen Dreame-karttakortin kanssa:**
+   - Integraatio tukee suoraan [Dreame Vacuum Map Card](https://github.com/Valtteri-H/dreame-vacuum-map-card) -Lovelace-korttia (oma erillinen HACS-frontend-repositorio, suomennettu ja roskakorituettu).
 
 ---
 
@@ -122,10 +120,8 @@ This edition is based on [Tasshack/dreame-vacuum](https://github.com/Tasshack/dr
 7. **Trash bin navigation (Go to Trash Bin):**
    - Button `button.<vacuum>_go_to_trash_bin`: Sends the robot directly to your trash bin for dustbin emptying. Pressing it again sends the robot back to the dock.
    - Button `button.<vacuum>_set_trash_bin_location` & service `dreame_vacuum.set_trash_bin_location`: Saves the current robot coordinates as the trash bin spot with one click.
-8. **Integrated Lovelace Map Card with Finnish localization & Trash Bin support (All-in-One):**
-   - Bundles the open-source `dreame-vacuum-map-card` frontend component directly inside this integration.
-   - Built directly from source: includes complete **Finnish localization** and a native **"Go to Trash Bin" button** right in the card action buttons!
-   - Automatically registers into Home Assistant's Lovelace resources upon setup (`type: custom:dreame-vacuum-map-card`) — no need to install a separate frontend repository in HACS.
+8. **Full Compatibility with Dedicated Map Card:**
+   - Supported natively by the [Dreame Vacuum Map Card](https://github.com/Valtteri-H/dreame-vacuum-map-card) frontend Lovelace card (separate HACS repository with Finnish translation and trash bin control).
 
 ---
 
