@@ -8,3 +8,11 @@
 __pycache__/
 *.py[cod]
 .venv/
+
+# Paikallisen työnkulun suojaus (ei julkiseen GitHubiin)
+PLAN.md
+PROGRESS.md
+RULES.md
+analysis/
+_scratch/
+*.log
