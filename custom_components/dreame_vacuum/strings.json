@@ -1962,6 +1962,12 @@
       }
     },
     "button": {
+      "go_to_trash_bin": {
+        "name": "Go to Trash Bin"
+      },
+      "set_trash_bin_location": {
+        "name": "Set Trash Bin Location"
+      },
       "backup_saved_map": {
         "name": "Backup Saved Map"
       },
@@ -2716,6 +2722,34 @@
     "vacuum_goto": {
       "name": "Go To",
       "description": "Go to the coordinate of the map and stop.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Coordinate of the point."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y Coordinate of the point."
+        }
+      }
+    },
+    "set_trash_bin_location": {
+      "name": "Set Trash Bin Location",
+      "description": "Set trash bin location coordinates.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Coordinate of the point."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y Coordinate of the point."
+        }
+      }
+    },
+    "vacuum_set_trash_bin_location": {
+      "name": "Set Trash Bin Location",
+      "description": "Set trash bin location coordinates.",
       "fields": {
         "x": {
           "name": "X",

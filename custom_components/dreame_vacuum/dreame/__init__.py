@@ -13,6 +13,7 @@ from .types import (
     DreameVacuumMopPadHumidity,
     DreameVacuumCarpetSensitivity,
     DreameVacuumCarpetCleaning,
+    DreameVacuumStatus,
     DreameVacuumState,
     DreameVacuumMopWashLevel,
     DreameVacuumMoppingType,

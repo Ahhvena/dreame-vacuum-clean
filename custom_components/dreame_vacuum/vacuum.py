@@ -40,6 +40,8 @@ from .dreame import (
 )
 from .const import (
     DOMAIN,
+    CONF_TRASH_BIN_X,
+    CONF_TRASH_BIN_Y,
     CONSUMABLE_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH,
     CONSUMABLE_FILTER,
@@ -272,6 +274,24 @@ async def async_setup_entry(
             vol.Required("y"): vol.All(vol.Coerce(int)),
         },
         DreameVacuum.async_goto.__name__,
+    )
+
+    platform.async_register_entity_service(
+        "set_trash_bin_location",
+        {
+            vol.Optional("x"): vol.All(vol.Coerce(int)),
+            vol.Optional("y"): vol.All(vol.Coerce(int)),
+        },
+        DreameVacuum.async_set_trash_bin_location.__name__,
+    )
+
+    platform.async_register_entity_service(
+        "vacuum_set_trash_bin_location",
+        {
+            vol.Optional("x"): vol.All(vol.Coerce(int)),
+            vol.Optional("y"): vol.All(vol.Coerce(int)),
+        },
+        DreameVacuum.async_set_trash_bin_location.__name__,
     )
 
     platform.async_register_entity_service(
@@ -1198,6 +1218,28 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         """Go to a point and take pictures around."""
         if x is not None and y is not None and x != "" and y != "":
             await self._try_command("Unable to call go_to: %s", self.device.go_to, x, y)
+
+    async def async_set_trash_bin_location(self, x=None, y=None) -> None:
+        """Set trash bin location coordinates."""
+        if x is None or y is None or x == "" or y == "":
+            pos = None
+            if self.coordinator.device.status.current_map:
+                pos = self.coordinator.device.status.current_map.robot_position
+            elif hasattr(self.coordinator.device, "map_data") and self.coordinator.device.map_data:
+                pos = self.coordinator.device.map_data.robot_position
+
+            if pos:
+                x = pos.x
+                y = pos.y
+
+        if x is not None and y is not None and x != "" and y != "":
+            options = {
+                **self.coordinator.config_entry.options,
+                CONF_TRASH_BIN_X: int(x),
+                CONF_TRASH_BIN_Y: int(y),
+            }
+            hass = self.hass or self.coordinator.hass
+            await hass.config_entries.async_update_entry(self.coordinator.config_entry, options=options)
 
     async def async_follow_path(self, points="") -> None:
         """Start a survaliance job."""

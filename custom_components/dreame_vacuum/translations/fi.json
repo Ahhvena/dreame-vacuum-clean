@@ -1962,6 +1962,12 @@
       }
     },
     "button": {
+      "go_to_trash_bin": {
+        "name": "Aja roskakorille"
+      },
+      "set_trash_bin_location": {
+        "name": "Tallenna roskakorin sijainti"
+      },
       "backup_saved_map": {
         "name": "Varmuuskopioi tallennettu kartta"
       },
@@ -2716,6 +2722,34 @@
     "vacuum_goto": {
       "name": "Mene kohteeseen",
       "description": "Mene kartan koordinaattiin ja pysähdy.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Pisteen X-koordinaatti."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Pisteen Y-koordinaatti."
+        }
+      }
+    },
+    "set_trash_bin_location": {
+      "name": "Tallenna roskakorin sijainti",
+      "description": "Aseta roskakorin koordinaatit.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Pisteen X-koordinaatti."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Pisteen Y-koordinaatti."
+        }
+      }
+    },
+    "vacuum_set_trash_bin_location": {
+      "name": "Tallenna roskakorin sijainti",
+      "description": "Aseta roskakorin koordinaatit.",
       "fields": {
         "x": {
           "name": "X",

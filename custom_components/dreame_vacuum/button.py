@@ -19,11 +19,11 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory, async_generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers import entity_registry
-from .const import DOMAIN
+from .const import DOMAIN, CONF_TRASH_BIN_X, CONF_TRASH_BIN_Y
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
-from .dreame import DreameVacuumAction, EntityUnavailableException
+from .dreame import DreameVacuumAction, DreameVacuumStatus, EntityUnavailableException
 
 
 @dataclass
@@ -31,6 +31,45 @@ class DreameVacuumButtonEntityDescription(DreameVacuumEntityDescription, ButtonE
     """Describes Dreame Vacuum Button entity."""
 
     action_fn: Callable[[object]] = None
+    async_press: Callable[[Any], Any] = None
+
+
+async def _async_go_to_trash_bin(entity: DreameVacuumButtonEntity) -> None:
+    """Go to trash bin or return to base if away."""
+    is_docked = bool(getattr(entity.device.status, "docked", False))
+    is_cleaning = bool(
+        getattr(entity.device.status, "cleaning", False)
+        or getattr(entity.device.status, "status", None) == DreameVacuumStatus.CLEANING
+        or getattr(entity.device.status, "zone_cleaning", False)
+        or getattr(entity.device.status, "spot_cleaning", False)
+        or getattr(entity.device.status, "segment_cleaning", False)
+        or getattr(entity.device.status, "auto_cleaning", False)
+    )
+    if not is_docked and not is_cleaning:
+        await entity._try_command("Unable to call %s", entity.device.return_to_base)
+    else:
+        coord_x = entity.coordinator.config_entry.options.get(CONF_TRASH_BIN_X)
+        coord_y = entity.coordinator.config_entry.options.get(CONF_TRASH_BIN_Y)
+        if coord_x is not None and coord_y is not None:
+            await entity._try_command("Unable to call %s", entity.device.go_to, coord_x, coord_y)
+
+
+async def _async_set_trash_bin_location(entity: DreameVacuumButtonEntity) -> None:
+    """Save current robot position as trash bin coordinates."""
+    pos = None
+    if entity.coordinator.device.status.current_map:
+        pos = entity.coordinator.device.status.current_map.robot_position
+    elif hasattr(entity.coordinator.device, "map_data") and entity.coordinator.device.map_data:
+        pos = entity.coordinator.device.map_data.robot_position
+
+    if pos:
+        options = {
+            **entity.coordinator.config_entry.options,
+            CONF_TRASH_BIN_X: pos.x,
+            CONF_TRASH_BIN_Y: pos.y,
+        }
+        hass = entity.hass or entity.coordinator.hass
+        await hass.config_entries.async_update_entry(entity.coordinator.config_entry, options=options)
 
 
 BUTTONS: tuple[ButtonEntityDescription, ...] = (
@@ -299,6 +338,28 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         action_fn=lambda device: device.backup_map(),
         exists_fn=lambda description, device: device.capability.backup_map and device.capability.map,
     ),
+    DreameVacuumButtonEntityDescription(
+        key="go_to_trash_bin",
+        icon="mdi:trash-can-outline",
+        async_press=_async_go_to_trash_bin,
+        available_fn=lambda device: (
+            not getattr(device.status, "draining", False)
+            and not getattr(device.status, "self_repairing", False)
+            and bool(getattr(device.capability, "map", False))
+        ),
+        exists_fn=lambda description, device: bool(getattr(device.capability, "map", False)),
+    ),
+    DreameVacuumButtonEntityDescription(
+        key="set_trash_bin_location",
+        icon="mdi:map-marker-check",
+        async_press=_async_set_trash_bin_location,
+        available_fn=lambda device: (
+            not getattr(device.status, "draining", False)
+            and not getattr(device.status, "self_repairing", False)
+            and bool(getattr(device.capability, "map", False))
+        ),
+        exists_fn=lambda description, device: bool(getattr(device.capability, "map", False)),
+    ),
 )
 
 
@@ -486,7 +547,9 @@ class DreameVacuumButtonEntity(DreameVacuumEntity, ButtonEntity):
         if not self.available:
             self._raise_error(EntityUnavailableException())
 
-        if self.entity_description.action_fn is not None:
+        if hasattr(self.entity_description, "async_press") and self.entity_description.async_press is not None:
+            await self.entity_description.async_press(self)
+        elif self.entity_description.action_fn is not None:
             await self._try_command(
                 "Unable to call %s",
                 self.entity_description.action_fn,

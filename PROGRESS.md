@@ -33,7 +33,18 @@
 - [x] Automaattinen GitHub Actions -julkaisutyönkulku luotu (`.github/workflows/release.yaml`).
 - [x] Atomiset git-commitit suoritettu `main`-haaraan.
 
-### Meneillään oleva vaihe: Vaihe 3 — Huonekohtaiset siivouspainikkeet (Haara: feature/room-cleaning-buttons)
+### Meneillään oleva vaihe: Vaihe 4 — Roskakoritoiminto (Haara: feature/trash-bin-location)
+- [x] Eristetty oma kehityshaara `feature/trash-bin-location`.
+- [x] Suunnitelma ja arkkitehtuuri kirjattu `PLAN.md`:hen.
+- [x] Toteutettu vakiot `CONF_TRASH_BIN_X` ja `CONF_TRASH_BIN_Y` (`const.py`).
+- [x] Toteutettu painikkeet `go_to_trash_bin` ja `set_trash_bin_location` (`button.py`).
+- [x] Toteutettu palvelu `dreame_vacuum.set_trash_bin_location` ja entiteettikutsut (`vacuum.py`, `services.yaml`).
+- [x] Lisätty käännökset ja kuvakkeet (`strings.json`, `translations/en.json`, `translations/fi.json`).
+- [x] Luotu kattava testisarja `analysis/test_trash_bin.py` (6/6 testiä hyväksytty).
+- [x] Suoritettu syntaksitarkistus `python3 -m compileall` (0 virhettä).
+- [ ] Versiopäivitys, dokumentaatio (`README.md`), merge `main`-haaraan ja julkaisu.
+
+### Valmistunut vaihe: Vaihe 3 — Huonekohtaiset siivouspainikkeet (v2.0.2-clean.2)
 - [x] Eristetty oma kehityshaara `feature/room-cleaning-buttons`.
 - [x] Arkkitehtuuri ja suunnitelma dokumentoitu `PLAN.md`:hen.
 - [x] Toteutettu `DreameVacuumSegmentButtonEntity` ja dynaaminen rekisteröinti tiedostoon `button.py`.

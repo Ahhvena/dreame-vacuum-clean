@@ -116,6 +116,44 @@ vacuum_goto:
         number:
           mode: box
 
+set_trash_bin_location:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    x:
+      example: 819
+      required: false
+      selector:
+        number:
+          mode: box
+    y:
+      example: -263
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_set_trash_bin_location:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    x:
+      example: 819
+      required: false
+      selector:
+        number:
+          mode: box
+    y:
+      example: -263
+      required: false
+      selector:
+        number:
+          mode: box
+
 vacuum_follow_path:
   target:
     entity:

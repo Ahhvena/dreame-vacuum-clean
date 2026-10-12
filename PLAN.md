@@ -27,6 +27,37 @@ Lisäksi luodaan selkeä haararakenne ja synkronointityökalu, jolla tulevat ups
 - `uv` virtuaaliympäristölle ja testaukselle
 - Git versionhallintaan ja haarojen yhdistämiseen
 
+## Suunnitelma: Roskakoritoiminto — Aja roskakorille (Vaihe 4)
+
+### Tavoite
+Mahdollistaa imurin ajaminen suoraan roskakorin viereen pölysäiliön tyhjennystä varten ja palauttaminen telakkaan yhdellä painalluksella.
+
+### Arkkitehtuuri
+1. **Koordinaattien tallennus:**
+   - Tallennetaan pysyvästi `coordinator.config_entry.options` -sanakirjaan avaimilla `trash_bin_x` ja `trash_bin_y`.
+2. **Entiteetit (`button.py`):**
+   - `button.<imuri>_go_to_trash_bin`:
+     - Jos imuri telakassa -> ajaa roskakorin koordinaatteihin (`device.go_to(x, y)`).
+     - Jos imuri on jo roskakorilla / pois telakasta -> palauttaa telakkaan (`device.return_to_base()`).
+     - Kuvake: `mdi:trash-can-outline`.
+   - `button.<imuri>_set_trash_bin_location`:
+     - Lukee imurin nykyisen robot_position (`x`, `y`) ja tallentaa sen options-asetuksiin.
+     - Kuvake: `mdi:map-marker-check`.
+3. **Palvelu (`vacuum.py` / `services.yaml`):**
+   - `dreame_vacuum.set_trash_bin_location`: ottaa parametrit `x` ja `y` (tai lukee nykyisen sijainnin).
+4. **Käännökset:**
+   - Lisätään `go_to_trash_bin` ("Aja roskakorille" / "Go to Trash Bin") ja `set_trash_bin_location` ("Tallenna roskakorin sijainti" / "Set Trash Bin Location") tiedostoihin `strings.json`, `en.json`, `fi.json`.
+
+### Työvaiheet
+- [x] 1. Toteutetaan roskakorin tallennus ja painikkeet (`button.py`).
+- [x] 2. Lisätään palvelukutsu (`vacuum.py`, `services.yaml`).
+- [x] 3. Lisätään käännökset ja kuvakkeet (`strings.json`, `en.json`, `fi.json`).
+- [x] 4. Kirjoitetaan yksikkötesti `analysis/test_trash_bin.py` ja ajetaan `compileall`.
+- [ ] 5. Päivitetään `PROGRESS.md`, `README.md` ja nostetaan versio `v2.0.2-clean.3`.
+- [ ] 6. Yhdistetään `main`-haaraan, julkaistaan GitHubiin ja verifioidaan Home Assistantissa.
+
+---
+
 ## Suunnitelma: Huonekohtaiset siivouspainikkeet (Vaihe 3)
 
 ### Tavoite

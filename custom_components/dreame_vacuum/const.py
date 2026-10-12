@@ -26,6 +26,8 @@ CONF_SQUARE: Final = "square"
 CONF_ACCOUNT_TYPE: Final = "account_type"
 CONF_DVC_KEY: Final = "dvc_key"
 CONF_VERSION: Final = "version"
+CONF_TRASH_BIN_X: Final = "trash_bin_x"
+CONF_TRASH_BIN_Y: Final = "trash_bin_y"
 
 MAP_OBJECTS: Final = ["color", "icon", "name", "name_background", "order", "suction_level", "water_volume", "cleaning_times", "cleaning_mode", "mopping_mode", "path", "no_go", "no_mop", "virtual_wall", "pathway", "active_area", "active_point", "charger", "robot", "cleaning_direction", "obstacle", "pet", "carpet", "material", "low_lying_area", "furniture", "ramp", "curtain", "cruise_point"]
 NOTIFICATION: Final = ["cleanup_completed", "consumable", "information", "warning", "error"]
