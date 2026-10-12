@@ -9,9 +9,7 @@ from homeassistant.helpers.typing import ConfigType
 import warnings
 from importlib import import_module
 from .const import DOMAIN
-
-## Frontend stripped in clean version
-frontend = None
+from . import frontend
 
 # Suppress python-miio FutureWarning on Python 3.13
 warnings.filterwarnings(
@@ -50,6 +48,8 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Dreame Vacuum from a config entry."""
+    if frontend is not None:
+        await frontend.setup(hass)
 
     coordinator = DreameVacuumDataUpdateCoordinator(hass, entry=entry)
 

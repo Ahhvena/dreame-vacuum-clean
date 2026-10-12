@@ -30,6 +30,9 @@ Tämä versio perustuu [Tasshack/dreame-vacuum](https://github.com/Tasshack/drea
 7. **Roskakoritoiminto (Aja roskakorille / Go to Trash Bin):**
    - Painike `button.<imuri>_go_to_trash_bin`: Ajaa imurin suoraan roskakorin eteen odottamaan tyhjennystä. Toinen painallus palauttaa imurin takaisin telakkaan.
    - Painike `button.<imuri>_set_trash_bin_location` & palvelu `dreame_vacuum.set_trash_bin_location`: Tallentaa nykyisen sijainnin roskakoriksi yhdellä klikkauksella.
+8. **Integroitu Lovelace-karttakortti (All-in-One):**
+   - Sisältää valmiiksi integroidun avoimen lähdekoodin `dreame-vacuum-map-card` -käyttöliittymäkortin.
+   - Rekisteröityy automaattisesti Home Assistantiin heti asennuksen jälkeen ilman erillistä HACS Lovelace -asennusta (`type: custom:dreame-vacuum-map-card`).
 
 ---
 
@@ -83,7 +86,8 @@ Päivitykset Tasshackin virallisesta repositoriosta voidaan tuoda helposti mukaa
 
 ## 📜 Lisenssi & Alkuperä
 
-- Alkuperäinen projekti: [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum)
+- Alkuperäinen integraatio: [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum) (Apache-2.0 License)
+- Integroitu karttakortti: [noambergauz/dreame-vacuum-map-card](https://github.com/noambergauz/dreame-vacuum-map-card) (MIT License, Copyright (c) 2023 Noam Bergauz)
 - Lisenssi: [Apache-2.0 License](LICENSE)
 
 ---
@@ -117,6 +121,9 @@ This edition is based on [Tasshack/dreame-vacuum](https://github.com/Tasshack/dr
 7. **Trash bin navigation (Go to Trash Bin):**
    - Button `button.<vacuum>_go_to_trash_bin`: Sends the robot directly to your trash bin for dustbin emptying. Pressing it again sends the robot back to the dock.
    - Button `button.<vacuum>_set_trash_bin_location` & service `dreame_vacuum.set_trash_bin_location`: Saves the current robot coordinates as the trash bin spot with one click.
+8. **Integrated Lovelace Map Card (All-in-One):**
+   - Bundles the open-source `dreame-vacuum-map-card` frontend component directly inside this integration.
+   - Automatically registers into Home Assistant's Lovelace resources upon setup (`type: custom:dreame-vacuum-map-card`) — no need to install a separate frontend repository in HACS.
 
 ---
 
@@ -170,5 +177,6 @@ Syncing new device profiles and updates from the official upstream repository:
 
 ## 📜 License & Credits
 
-- Original Project: [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum)
+- Original Project: [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum) (Apache-2.0 License)
+- Bundled Map Card: [noambergauz/dreame-vacuum-map-card](https://github.com/noambergauz/dreame-vacuum-map-card) (MIT License, Copyright (c) 2023 Noam Bergauz)
 - License: [Apache-2.0 License](LICENSE)
