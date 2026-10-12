@@ -42,7 +42,9 @@
 - [x] Lisätty käännökset ja kuvakkeet (`strings.json`, `translations/en.json`, `translations/fi.json`).
 - [x] Luotu kattava testisarja `analysis/test_trash_bin.py` (6/6 testiä hyväksytty).
 - [x] Suoritettu syntaksitarkistus `python3 -m compileall` (0 virhettä).
-- [ ] Versiopäivitys, dokumentaatio (`README.md`), merge `main`-haaraan ja julkaisu.
+- [x] Päivitetty versio `v2.0.2-clean.3` tiedostoon `manifest.json`.
+- [x] Päivitetty `README.md` roskakoritoiminnon kuvauksella (suomi + englanti).
+- [ ] Yhdistetään `main`-haaraan, julkaistaan GitHubiin ja verifioidaan Home Assistantissa.
 
 ### Valmistunut vaihe: Vaihe 3 — Huonekohtaiset siivouspainikkeet (v2.0.2-clean.2)
 - [x] Eristetty oma kehityshaara `feature/room-cleaning-buttons`.

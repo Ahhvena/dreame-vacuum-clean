@@ -27,6 +27,9 @@ Tämä versio perustuu [Tasshack/dreame-vacuum](https://github.com/Tasshack/drea
 6. **Automaattiset huonekohtaiset siivouspainikkeet (One-click Room Cleaning):**
    - Luo automaattisesti jokaiselle kartan huoneelle oman dynaamisen `button`-entiteetin (esim. `button.fifi_clean_eteinen`).
    - Pysyvä `unique_id` (segment_id) takaa, että huoneiden uudelleennimeäminen ei koskaan riko automaatioita tai dashboard-painikkeita.
+7. **Roskakoritoiminto (Aja roskakorille / Go to Trash Bin):**
+   - Painike `button.<imuri>_go_to_trash_bin`: Ajaa imurin suoraan roskakorin eteen odottamaan tyhjennystä. Toinen painallus palauttaa imurin takaisin telakkaan.
+   - Painike `button.<imuri>_set_trash_bin_location` & palvelu `dreame_vacuum.set_trash_bin_location`: Tallentaa nykyisen sijainnin roskakoriksi yhdellä klikkauksella.
 
 ---
 
@@ -111,6 +114,9 @@ This edition is based on [Tasshack/dreame-vacuum](https://github.com/Tasshack/dr
 6. **Automatic per-room cleaning buttons (One-click Room Cleaning):**
    - Automatically generates a dynamic `button` entity for every room segment on the map (e.g. `button.fifi_clean_kitchen`).
    - Persistent `unique_id` (anchored to `segment_id`) guarantees that renaming rooms in the mobile app never breaks Home Assistant automations or dashboard buttons.
+7. **Trash bin navigation (Go to Trash Bin):**
+   - Button `button.<vacuum>_go_to_trash_bin`: Sends the robot directly to your trash bin for dustbin emptying. Pressing it again sends the robot back to the dock.
+   - Button `button.<vacuum>_set_trash_bin_location` & service `dreame_vacuum.set_trash_bin_location`: Saves the current robot coordinates as the trash bin spot with one click.
 
 ---
 
