@@ -54,7 +54,7 @@ Mahdollistaa imurin ajaminen suoraan roskakorin viereen pölysäiliön tyhjennys
 - [x] 3. Lisätään käännökset ja kuvakkeet (`strings.json`, `en.json`, `fi.json`).
 - [x] 4. Kirjoitetaan yksikkötesti `analysis/test_trash_bin.py` ja ajetaan `compileall`.
 - [x] 5. Päivitetään `PROGRESS.md`, `README.md` ja nostetaan versio `v2.0.2-clean.3`.
-- [ ] 6. Yhdistetään `main`-haaraan, julkaistaan GitHubiin ja verifioidaan Home Assistantissa.
+- [x] 6. Yhdistetään `main`-haaraan, julkaistaan GitHubiin ja verifioidaan Home Assistantissa.
 
 ---
 

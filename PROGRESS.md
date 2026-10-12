@@ -44,7 +44,9 @@
 - [x] Suoritettu syntaksitarkistus `python3 -m compileall` (0 virhettä).
 - [x] Päivitetty versio `v2.0.2-clean.3` tiedostoon `manifest.json`.
 - [x] Päivitetty `README.md` roskakoritoiminnon kuvauksella (suomi + englanti).
-- [ ] Yhdistetään `main`-haaraan, julkaistaan GitHubiin ja verifioidaan Home Assistantissa.
+- [x] Yhdistetty `main`-haaraan, julkaistu GitHub Release `v2.0.2-clean.3`.
+- [x] Verifioitu live Home Assistantissa: painikkeet luotu ja toiminnassa (`Fifi Aja roskakorille`, `Fifi Tallenna roskakorin sijainti`).
+- [x] GitHub asetettu takaisin yksityiseksi (`private`).
 
 ### Valmistunut vaihe: Vaihe 3 — Huonekohtaiset siivouspainikkeet (v2.0.2-clean.2)
 - [x] Eristetty oma kehityshaara `feature/room-cleaning-buttons`.
