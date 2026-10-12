@@ -48,3 +48,9 @@ async def async_register_frontend(hass: HomeAssistant) -> None:
 async def setup(hass: HomeAssistant) -> None:
     """Entry point for frontend setup."""
     await async_register_frontend(hass)
+
+
+async def remove(hass: HomeAssistant, entry=None) -> None:
+    """Entry point for frontend cleanup when entry is removed."""
+    pass
+
