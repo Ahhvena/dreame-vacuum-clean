@@ -1,61 +1,55 @@
-# Dreame Vacuum (Clean Edition) 🧹✨
+# Dreame Vacuum (Clean Edition)
 
 [![GitHub Release](https://img.shields.io/github/v/release/Valtteri-H/dreame-vacuum-clean?style=for-the-badge&color=18bcf2)](https://github.com/Valtteri-H/dreame-vacuum-clean/releases)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom%20Repo-orange.svg?logo=HomeAssistantCommunityStore&color=18bcf2&logoColor=white&style=for-the-badge)](https://hacs.xyz/)
 [![Validated](https://img.shields.io/badge/Hassfest-Passing-success?style=for-the-badge&logo=homeassistant&logoColor=white)](https://github.com/Valtteri-H/dreame-vacuum-clean/actions)
 
-Täysin avoin, telemetriaton, DRM-vapaa ja itsenäinen Home Assistant -integraatio **Dreame**, **MOVA**, **Mijia** ja **Trouver** -robotti-imureille.
+Avoin, telemetriaton, DRM-vapaa ja itsenäinen Home Assistant -integraatio Dreame-, MOVA-, Mijia- ja Trouver-robotti-imureille.
 
-Tämä versio perustuu [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum) -integraatioon, josta on poistettu kaikki kyseenalaiset suljetun koodin DRM-mekanismit, telemetriaseuranta ja raskaat V8-C++ -ajonaikaiset riippuvuudet.
+Tämä versio perustuu Tasshack/dreame-vacuum -integraatioon, josta on poistettu suljetun koodin DRM-mekanismit, telemetriaseuranta ja V8-ajonaikaiset riippuvuudet.
 
 ---
 
-## 🛡️ Mitä on siivottu ja parannettu?
+## Mitä on siivottu ja parannettu?
 
 1. **Ei telemetriaa tai laitetietojen keruuta:**
-   - Poistettu kaikki yhteydenotot ja laitetietojen lähetys kolmansien osapuolten palvelimille (`api.tasshack.com`).
-   - Kaikki liikenne kulkee ainoastaan Home Assistantin, paikallisen imurin ja valmistajan virallisen pilvipalvelun välillä.
+   - Poistettu yhteydenotot ja laitetietojen lähetys kolmansien osapuolten palvelimille (`api.tasshack.com`).
+   - Verkkoliikenne rajoittuu Home Assistantin, paikallisen imurin ja valmistajan virallisen pilvipalvelun välille.
 2. **Ei DRM-lukituksia tai maksullisia avaimia:**
    - Poistettu `dvc_key`-lisenssiavaimen pakotus ja maksulliset rajoitukset. Laitteet ja toiminnot ovat heti käytettävissä.
 3. **Ei koodin peukalointitarkistuksia:**
    - Poistettu Python-tiedostojen SHA256-tiivisteiden laskenta (`gvh`/`gsh`) ja DRM-salauksenpurkurutiinit.
 4. **Ei hämärrettyjä paketteja:**
    - Poistettu 272 kt kokoinen hämärretty `FRONTEND`-base64-blobi `const.py`-tiedostosta sekä mainosviestit.
-5. **Natiivi Python-karttaoptimointi (Ei enää `mini-racer`-kaatumisia):**
+5. **Natiivi Python-karttaoptimointi:**
    - Korvattu erillinen C++/V8 JavaScript -moottoririippuvuus (`mini-racer`, `MAP_OPTIMIZER_JS`) integraation omalla natiivilla Python/NumPy-optimointialgoritmilla.
-   - Integraatio on nyt kevyt, itsenäinen ja toimii vakaasti kaikilla Home Assistant -alustoilla (ARM, Alpine/musl, Linux).
-6. **Automaattiset huonekohtaiset siivouspainikkeet (One-click Room Cleaning):**
+   - Integraatio toimii vakaasti kaikilla Home Assistant -alustoilla (ARM, Alpine/musl, Linux).
+6. **Automaattiset huonekohtaiset siivouspainikkeet:**
    - Luo automaattisesti jokaiselle kartan huoneelle oman dynaamisen `button`-entiteetin (esim. `button.fifi_clean_eteinen`).
-   - Pysyvä `unique_id` (segment_id) takaa, että huoneiden uudelleennimeäminen ei koskaan riko automaatioita tai dashboard-painikkeita.
-7. **Roskakoritoiminto (Aja roskakorille / Go to Trash Bin):**
-   - Painike `button.<imuri>_go_to_trash_bin`: Ajaa imurin suoraan roskakorin eteen odottamaan tyhjennystä. Toinen painallus palauttaa imurin takaisin telakkaan.
-   - Painike `button.<imuri>_set_trash_bin_location` & palvelu `dreame_vacuum.set_trash_bin_location`: Tallentaa nykyisen sijainnin roskakoriksi yhdellä klikkauksella.
+   - Pysyvä `unique_id` (segment_id) takaa, että huoneiden uudelleennimeäminen ei riko automaatioita tai kojelautapainikkeita.
+7. **Roskakoritoiminto (Aja roskakorille):**
+   - Painike `button.<imuri>_go_to_trash_bin`: Ajaa imurin roskakorin eteen odottamaan tyhjennystä. Toinen painallus palauttaa imurin takaisin telakkaan.
+   - Painike `button.<imuri>_set_trash_bin_location` ja palvelu `dreame_vacuum.set_trash_bin_location`: Tallentaa nykyisen sijainnin roskakoriksi yhdellä kutsulla.
 8. **Täysi yhteensopivuus erillisen Dreame-karttakortin kanssa:**
    - Integraatio tukee suoraan [Dreame Vacuum Map Card](https://github.com/Valtteri-H/dreame-vacuum-map-card) -Lovelace-korttia (oma erillinen HACS-frontend-repositorio, suomennettu ja roskakorituettu).
 
 ---
 
-## 🤖 Tekoälyavusteinen kehitys ja auditointi
+## Versionumerointi
 
-Täysin vibekoodattu projekti
-
----
-
-## 📌 Versionumerointi
-
-Tämä projekti seuraa **upstream-peilaus- ja patch-versiointia**:
+Tämä projekti seuraa upstream-peilaus- ja patch-versiointia:  
 `v<UPSTREAM_VERSIO>-clean.<PATCH>`
 
-* **Ensimmäinen osa (`v2.0.2`):** Vastaa suoraan alkuperäisen [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum) -integraation virallista julkaisuversiota ja sen laitetukea.
-* **Jälkimmäinen osa (`-clean.1`, `-clean.2` jne.):** Kertoo tämän puhdistetun ja itsenäisen version omat päivitykset ja parannukset.
+* **Ensimmäinen osa (`v2.0.2`):** Vastaa suoraan alkuperäisen Tasshack/dreame-vacuum -integraation virallista julkaisuversiota ja sen laitetukea.
+* **Jälkimmäinen osa (`-clean.1`, `-clean.2` jne.):** Kertoo tämän puhdistetun version omat päivitykset ja parannukset.
 * Esimerkki: `v2.0.2-clean.2` = Tasshackin `v2.0.2`-versioon pohjautuva puhdistettu versio, jossa on lisäksi huonekohtaiset siivouspainikkeet.
 
 ---
 
-## 🚀 Asennus Home Assistantiin (HACS)
+## Asennus Home Assistantiin (HACS)
 
 ### 1. Lisää HACS:iin Custom Repositoryna
-1. Avaa Home Assistant ja mene kohtaan **HACS** -> **Integrations**.
+1. Avaa Home Assistant ja siirry kohtaan **HACS** -> **Integrations**.
 2. Klikkaa oikean yläkulman valikkoa `⋮` ja valitse **Custom repositories** (Omat tietovarastot).
 3. Täytä tiedot:
    - **Repository:** `https://github.com/Valtteri-H/dreame-vacuum-clean`
@@ -64,18 +58,18 @@ Tämä projekti seuraa **upstream-peilaus- ja patch-versiointia**:
 
 ### 2. Lataa ja käynnistä uudelleen
 1. Etsi HACS:sta **Dreame Vacuum (Clean)**.
-2. Valitse **Download** (Lataa) ja valitse uusin julkaisu (esim. `v2.0.2-clean.2`).
+2. Valitse **Download** (Lataa) ja valitse uusin julkaisu (esim. `v2.0.2-clean.6`).
 3. Käynnistä Home Assistant uudelleen: **Asetukset** -> **Järjestelmä** -> **Käynnistä uudelleen**.
 
 ### 3. Ota imuri käyttöön
-- Mene: **Asetukset** -> **Laitteet ja palvelut** -> **Lisää integraatio** -> Etsi *Dreame Vacuum*.
-- Kirjaudu sisään Dreamehome-, Xiaomi Home- tai MOVA-tunnuksillasi (tai syötä paikallinen IP ja Token).
+- Siirry: **Asetukset** -> **Laitteet ja palvelut** -> **Lisää integraatio** -> Etsi *Dreame Vacuum*.
+- Kirjaudu sisään Dreamehome-, Xiaomi Home- tai MOVA-tunnuksilla (tai syötä paikallinen IP ja Token).
 
 ---
 
-## 🔄 Upstream-päivitykset
+## Upstream-päivitykset
 
-Päivitykset Tasshackin virallisesta repositoriosta voidaan tuoda helposti mukaan valmiilla synkronointityökalulla:
+Päivitykset virallisesta repositoriosta voidaan tuoda mukaan synkronointityökalulla:
 
 ```bash
 ./scripts/sync_upstream.sh
@@ -83,24 +77,24 @@ Päivitykset Tasshackin virallisesta repositoriosta voidaan tuoda helposti mukaa
 
 ---
 
-## 📜 Lisenssi & Alkuperä
+## Lisenssi ja tekijänoikeudet
 
 - Alkuperäinen integraatio: [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum) (Apache-2.0 License)
-- Integroitu karttakortti: [noambergauz/dreame-vacuum-map-card](https://github.com/noambergauz/dreame-vacuum-map-card) (MIT License, Copyright (c) 2023 Noam Bergauz)
 - Lisenssi: [Apache-2.0 License](LICENSE)
 
----
----
-
-# English Documentation 🇬🇧
-
-A fully open, telemetry-free, DRM-free and standalone Home Assistant integration for **Dreame**, **MOVA**, **Mijia**, and **Trouver** robot vacuums.
-
-This edition is based on [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum), with all proprietary DRM mechanisms, telemetry tracking, and fragile V8/JavaScript C++ runtime dependencies removed.
 
 ---
+---
 
-## 🛡️ What was cleaned and improved?
+# English Documentation
+
+A fully open, telemetry-free, DRM-free and standalone Home Assistant integration for Dreame, MOVA, Mijia, and Trouver robot vacuums.
+
+This edition is based on Tasshack/dreame-vacuum, with all proprietary DRM mechanisms, telemetry tracking, and fragile V8/JavaScript C++ runtime dependencies removed.
+
+---
+
+## What was cleaned and improved?
 
 1. **No telemetry or device data leakage:**
    - Removed all calls and data transmissions to third-party tracking servers (`api.tasshack.com`).
@@ -111,10 +105,10 @@ This edition is based on [Tasshack/dreame-vacuum](https://github.com/Tasshack/dr
    - Removed SHA256 file hashing verification (`gvh`/`gsh`) and DRM decryption routines.
 4. **No obfuscated payload blobs:**
    - Removed the 272 KB obfuscated `FRONTEND` base64 blob from `const.py` along with promotional messages.
-5. **Native Python map optimization (No more `mini-racer` crashes):**
+5. **Native Python map optimization:**
    - Replaced external C++/V8 JavaScript runtime dependency (`mini-racer`, `MAP_OPTIMIZER_JS`) with the integration's native Python/NumPy map optimization algorithm.
    - Lightweight, standalone, and reliable across all Home Assistant host architectures (ARM, Alpine/musl, Linux).
-6. **Automatic per-room cleaning buttons (One-click Room Cleaning):**
+6. **Automatic per-room cleaning buttons:**
    - Automatically generates a dynamic `button` entity for every room segment on the map (e.g. `button.fifi_clean_kitchen`).
    - Persistent `unique_id` (anchored to `segment_id`) guarantees that renaming rooms in the mobile app never breaks Home Assistant automations or dashboard buttons.
 7. **Trash bin navigation (Go to Trash Bin):**
@@ -125,24 +119,18 @@ This edition is based on [Tasshack/dreame-vacuum](https://github.com/Tasshack/dr
 
 ---
 
-## 🤖 AI-Assisted Development & Auditing
+## Versioning Scheme
 
-Vibe-coded project powered by AI agents.
-
----
-
-## 📌 Versioning Scheme
-
-This project follows an **upstream-mirroring and patch-versioning scheme**:  
+This project follows an upstream-mirroring and patch-versioning scheme:  
 `v<UPSTREAM_VERSION>-clean.<PATCH>`
 
-* **First part (`v2.0.2`):** Matches the official upstream [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum) release version and device definitions.
+* **First part (`v2.0.2`):** Matches the official upstream Tasshack/dreame-vacuum release version and device definitions.
 * **Second part (`-clean.1`, `-clean.2`, etc.):** Represents releases and enhancements specific to this clean edition.
 * *Example:* `v2.0.2-clean.2` = Based on upstream `v2.0.2`, including clean patches plus dynamic per-room cleaning button entities.
 
 ---
 
-## 🚀 Installation via HACS
+## Installation via HACS
 
 ### 1. Add as a Custom Repository
 1. Open Home Assistant and navigate to **HACS** -> **Integrations**.
@@ -154,7 +142,7 @@ This project follows an **upstream-mirroring and patch-versioning scheme**:
 
 ### 2. Download and Restart
 1. Search for **Dreame Vacuum (Clean)** in HACS.
-2. Click **Download** and select the latest release (e.g. `v2.0.2-clean.2`).
+2. Click **Download** and select the latest release (e.g. `v2.0.2-clean.6`).
 3. Restart Home Assistant: **Settings** -> **System** -> **Restart**.
 
 ### 3. Add the Integration
@@ -163,7 +151,7 @@ This project follows an **upstream-mirroring and patch-versioning scheme**:
 
 ---
 
-## 🔄 Upstream Synchronization
+## Upstream Synchronization
 
 Syncing new device profiles and updates from the official upstream repository:
 
@@ -173,8 +161,8 @@ Syncing new device profiles and updates from the official upstream repository:
 
 ---
 
-## 📜 License & Credits
+## License & Credits
 
 - Original Project: [Tasshack/dreame-vacuum](https://github.com/Tasshack/dreame-vacuum) (Apache-2.0 License)
-- Bundled Map Card: [noambergauz/dreame-vacuum-map-card](https://github.com/noambergauz/dreame-vacuum-map-card) (MIT License, Copyright (c) 2023 Noam Bergauz)
 - License: [Apache-2.0 License](LICENSE)
+
