@@ -13940,7 +13940,7 @@ class DreameVacuumMapOptimizer:
             map_data.optimized_pixel_type = pixel_type
             map_data.optimized_dimensions = MapImageDimensions(top, left, height, width, map_data.dimensions.grid_size)
 
-    def optimize(self, map_data, saved_map_data=None, js_optimizer=False):
+    def optimize(self, map_data, saved_map_data=None):
         # Native Python map optimizer
         with self._lock:
             return self._optimize(map_data, saved_map_data)

@@ -1,16 +1,10 @@
 {
   "domain": "dreame_vacuum",
   "name": "Dreame Vacuum (Clean)",
-  "after_dependencies": [
-    "lovelace"
-  ],
   "codeowners": [
     "@Valtteri-H"
   ],
   "config_flow": true,
-  "dependencies": [
-    "http"
-  ],
   "documentation": "https://github.com/Valtteri-H/dreame-vacuum-clean",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Valtteri-H/dreame-vacuum-clean/issues",
@@ -20,5 +14,5 @@
     "python-miio",
     "paho-mqtt"
   ],
-  "version": "v2.0.2-clean.6"
+  "version": "v2.0.2-clean.7"
 }

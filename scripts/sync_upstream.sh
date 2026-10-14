@@ -34,7 +34,7 @@ echo "3. Palataan siivottuun työkappaleeseen ($CLEAN_BRANCH)..."
 git checkout "$CLEAN_BRANCH"
 
 echo "4. Yhdistetään upstream-tracking -> $CLEAN_BRANCH (rebase suositeltu)..."
-if git rebase upstream-tracking; then
+if git rebase -X ignore-space-at-eol upstream-tracking; then
     echo "Rebase onnistui suoraan ilman konflikteja!"
 else
     echo "Huomio: Rebase kohtasi konflikteja. Ratkaise ne tai keskeytä: git rebase --abort"

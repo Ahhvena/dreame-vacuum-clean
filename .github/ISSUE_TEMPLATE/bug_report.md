@@ -1,9 +1,8 @@
 ---
 name: "Integration · Bug Report"
-about: "Something is wrong with the integration (connection, entities, services, map data, device behavior). For dashboard problems, use the Dreame Vacuum Card bug report."
+about: "Something is wrong with the integration (connection, entities, services, map data, device behavior)."
 title: ""
 labels: bug, integration
-assignees: Tasshack
 
 ---
 

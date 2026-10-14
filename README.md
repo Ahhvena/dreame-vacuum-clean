@@ -25,7 +25,7 @@ Tämä versio perustuu Tasshack/dreame-vacuum -integraatioon, josta on poistettu
    - Korvattu erillinen C++/V8 JavaScript -moottoririippuvuus (`mini-racer`, `MAP_OPTIMIZER_JS`) integraation omalla natiivilla Python/NumPy-optimointialgoritmilla.
    - Integraatio toimii vakaasti kaikilla Home Assistant -alustoilla (ARM, Alpine/musl, Linux).
 6. **Automaattiset huonekohtaiset siivouspainikkeet:**
-   - Luo automaattisesti jokaiselle kartan huoneelle oman dynaamisen `button`-entiteetin (esim. `button.fifi_clean_eteinen`).
+   - Luo automaattisesti jokaiselle kartan huoneelle oman dynaamisen `button`-entiteetin (esim. `button.robot_vacuum_clean_eteinen`).
    - Pysyvä `unique_id` (segment_id) takaa, että huoneiden uudelleennimeäminen ei riko automaatioita tai kojelautapainikkeita.
 7. **Roskakoritoiminto (Aja roskakorille):**
    - Painike `button.<imuri>_go_to_trash_bin`: Ajaa imurin roskakorin eteen odottamaan tyhjennystä. Toinen painallus palauttaa imurin takaisin telakkaan.
@@ -58,7 +58,7 @@ Tämä projekti seuraa upstream-peilaus- ja patch-versiointia:
 
 ### 2. Lataa ja käynnistä uudelleen
 1. Etsi HACS:sta **Dreame Vacuum (Clean)**.
-2. Valitse **Download** (Lataa) ja valitse uusin julkaisu (esim. `v2.0.2-clean.6`).
+2. Valitse **Download** (Lataa) ja valitse uusin julkaisu (esim. `v2.0.2-clean.7`).
 3. Käynnistä Home Assistant uudelleen: **Asetukset** -> **Järjestelmä** -> **Käynnistä uudelleen**.
 
 ### 3. Ota imuri käyttöön
@@ -109,7 +109,7 @@ This edition is based on Tasshack/dreame-vacuum, with all proprietary DRM mechan
    - Replaced external C++/V8 JavaScript runtime dependency (`mini-racer`, `MAP_OPTIMIZER_JS`) with the integration's native Python/NumPy map optimization algorithm.
    - Lightweight, standalone, and reliable across all Home Assistant host architectures (ARM, Alpine/musl, Linux).
 6. **Automatic per-room cleaning buttons:**
-   - Automatically generates a dynamic `button` entity for every room segment on the map (e.g. `button.fifi_clean_kitchen`).
+   - Automatically generates a dynamic `button` entity for every room segment on the map (e.g. `button.robot_vacuum_clean_kitchen`).
    - Persistent `unique_id` (anchored to `segment_id`) guarantees that renaming rooms in the mobile app never breaks Home Assistant automations or dashboard buttons.
 7. **Trash bin navigation (Go to Trash Bin):**
    - Button `button.<vacuum>_go_to_trash_bin`: Sends the robot directly to your trash bin for dustbin emptying. Pressing it again sends the robot back to the dock.
@@ -142,7 +142,7 @@ This project follows an upstream-mirroring and patch-versioning scheme:
 
 ### 2. Download and Restart
 1. Search for **Dreame Vacuum (Clean)** in HACS.
-2. Click **Download** and select the latest release (e.g. `v2.0.2-clean.6`).
+2. Click **Download** and select the latest release (e.g. `v2.0.2-clean.7`).
 3. Restart Home Assistant: **Settings** -> **System** -> **Restart**.
 
 ### 3. Add the Integration

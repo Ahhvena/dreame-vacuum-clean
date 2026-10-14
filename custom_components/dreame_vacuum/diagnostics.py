@@ -33,7 +33,6 @@ EXCLUDED_KEYS = [
     "ap",
     "auth_key",
     "did",
-    "dvc_key",
     "host",
     "last_updated_time",
     "mac",
